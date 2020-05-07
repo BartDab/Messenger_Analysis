@@ -13,6 +13,8 @@ library(tidytext)
 library(stringi)
 library(tm)
 library(readxl)
+library(qdapRegex)
+library(viridisLite)
 ```
 
 
@@ -72,11 +74,16 @@ data_short<-data_text[1:15000,]
 
 ```{r}
 data_no_emoji<-data_short
+data_no_emoji$text<-rm_url(data_no_emoji$text)
 data_no_emoji$text<-gsub("[^A-Za-zĄąćĆĘęŁłŃńóÓŚśŻżŹź0-9]"," ",data_no_emoji$text)
 unwanted_array = list('Ą'="A",'ą'='a','ć'='c','Ć'='C','Ę'='E','ę'='e','Ł'='L','ł'='l','Ń'="N",'ń'='n','ó'='o','Ó'='O','Ś'='S','ś'='s','Ż'='Z','ż'='z','ź'='z','Ź'='Z')
 data_no_emoji$text<-chartr(paste(names(unwanted_array), collapse=''),
          paste(unwanted_array, collapse=''),
          data_no_emoji$text)
+nanotek<-dplyr::filter(data_no_emoji, grepl('nanotek', text))
+
+nanotek<-dplyr::filter(data_no_emoji, grepl('bartosz', text))
+custom_stop<-c('nanotek','you','your','call','chat','theme','the','called','missed','sent','nickname','has','turned','played','tez','wiec','bym','now','mial','mialem','bym','miec','maja','masz','turn','attachment','kuba','bartosz')
 ```
 
 ```{r}
@@ -86,9 +93,17 @@ data_corpus
 ```
 
 ```{r}
+stopwords <- read_csv("E:/asd/polish.stopwords.txt", 
+    col_names = FALSE)
+head(stopwords)
+```
+
+```{r}
 data_clean<-tm_map(data_corpus,removePunctuation)
 data_clean<-tm_map(data_clean, content_transformer(tolower))
 data_clean<-tm_map(data_clean,stripWhitespace)
+data_clean<-tm_map(data_clean,removeWords,stopwords$X1)
+data_clean<-tm_map(data_clean,removeWords,custom_stop)
 ```
 #there's a problem with emoji
 NO MORE :)
@@ -106,9 +121,20 @@ dim(data_m)
 ```{r}
 freq <- rowSums(data_m)
 freq <- sort(freq,decreasing=TRUE)
+```
+
+
+```{r}
 str(freq)
-head(freq,10)
+head(freq,64)
 barplot(freq[1:10], col = "tan", las = 2)
 ```
 
 
+```{r}
+layout(matrix(c(1, 2), nrow=2), heights=c(1, 4))
+par(mar=rep(0, 4))
+plot.new()
+text(x=0.5, y=0.5, "Me vs Natonek")
+wordcloud(names(freq),freq,max.words=50,color=cividis(1),main='Title')
+```
