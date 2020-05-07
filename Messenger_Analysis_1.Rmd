@@ -57,50 +57,58 @@ data_text<-data_msg_comb%>%
   tibble::rowid_to_column("doc_id")
 data_text<-data_text[,c('doc_id','content','sender_name','timestamp_ms')]
 colnames(data_text)<-c('doc_id','text','sender_name','timestamp_ms')
+data_short<-data_text[1:15000,]
 ```
 
 
 
 ```{r}
-emoji<-read_xlsx('E:/asd/emoticon_conversion.xlsx')
-colnames(emoji)<-c('a','b','c','d','e','f','g','Unicode','Bytes','Description')
-data_no_emoji$text<-removeWords(data_no_emoji$text,emoji$Bytes)
+#emoji<-read_xlsx('E:/asd/emoticon_conversion.xlsx')
+#colnames(emoji)<-c('a','b','c','d','e','f','g','Unicode','Bytes','Description')
+#data_no_emoji$text<-removeWords(data_no_emoji$text,emoji$Bytes)
 ```
 
 
 
 ```{r}
-data_no_emoji<-data_text
+data_no_emoji<-data_short
 data_no_emoji$text<-gsub("[^A-Za-zĄąćĆĘęŁłŃńóÓŚśŻżŹź0-9]"," ",data_no_emoji$text)
 unwanted_array = list('Ą'="A",'ą'='a','ć'='c','Ć'='C','Ę'='E','ę'='e','Ł'='L','ł'='l','Ń'="N",'ń'='n','ó'='o','Ó'='O','Ś'='S','ś'='s','Ż'='Z','ż'='z','ź'='z','Ź'='Z')
-#unwanted_array2<-unlist(unwanted_array,use.names=FALSE)
-#unwanted_array2
-#names(unwanted_array)
-#data_no_emoji$text<-str_replace_all(data_no_emoji$text,names(unwanted_array),unwanted_array2)
 data_no_emoji$text<-chartr(paste(names(unwanted_array), collapse=''),
          paste(unwanted_array, collapse=''),
-         data_no_emoji$text)#still doesn't work properly
-#data_no_emoji$text<-iconv(data_no_emoji$text,to='ASCII')
+         data_no_emoji$text)
 ```
 
 ```{r}
 data_source<-DataframeSource(data_no_emoji)
 data_corpus<-VCorpus(data_source)
 data_corpus
-#tolower(data_text)
-#iconv(data_text[1:3,], to='ASCII//TRANSLIT')
 ```
 
-
-
 ```{r}
-#to remove emojis
-#data_clean <- iconv(data_corpus, 'UTF-8', 'ASCII')
 data_clean<-tm_map(data_corpus,removePunctuation)
 data_clean<-tm_map(data_clean, content_transformer(tolower))
+data_clean<-tm_map(data_clean,stripWhitespace)
 ```
-there's a problem with emoji
+#there's a problem with emoji
+NO MORE :)
 ```{r}
 data_tdm<-TermDocumentMatrix(data_clean)
-
+data_tdm
 ```
+
+```{r}
+gc()
+data_m<-as.matrix(data_tdm)
+dim(data_m)
+```
+
+```{r}
+freq <- rowSums(data_m)
+freq <- sort(freq,decreasing=TRUE)
+str(freq)
+head(freq,10)
+barplot(freq[1:10], col = "tan", las = 2)
+```
+
+
