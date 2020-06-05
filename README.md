@@ -8,4 +8,5 @@ I try to regularly update file and creates new function, as I find it pretty int
 * data cleaning for text analysis - include stopwords removing (there are also some stopwords specific for conversation, you could ignore that), emojis and special signs cleaning, unifying polish special signs (e.g. "ą") with their latin prototypes and some common cleaning steps
 * barplot and wordcloud with most popular words in conversation
 * animated plot with messages sent by users with time dimension
+
 Potential next steps include reaction's network analysis, activity by hours, finding specific words for users and emoji analysis.
