@@ -22,26 +22,26 @@ library(circular)
 
 
 ```{r}
-data1<-jsonlite::fromJSON(txt='E:/data18052020/messages/inbox/AniaSmoter_nhbNF6vGSw/data1.txt')
-#data2<-jsonlite::fromJSON(txt='E:/data18052020/messages/inbox/Jakbedziewdomusekcjazakazna_HYr4iyYDqA/data2.txt')
-#data3<-jsonlite::fromJSON(txt='E:/data18052020/messages/inbox/Jakbedziewdomusekcjazakazna_HYr4iyYDqA/data3.txt')
-#data4<-jsonlite::fromJSON(txt='E:/data18052020/messages/inbox/Jakbedziewdomusekcjazakazna_HYr4iyYDqA/data4.txt')
-#data5<-jsonlite::fromJSON(txt='E:/data18052020/messages/inbox/Jakbedziewdomusekcjazakazna_HYr4iyYDqA/data5.txt')
-#data6<-jsonlite::fromJSON(txt='E:/data18052020/messages/inbox/Jakbedziewdomusekcjazakazna_HYr4iyYDqA/data6.txt')
-#data7<-jsonlite::fromJSON(txt='E:/data18052020/messages/inbox/Jakbedziewdomusekcjazakazna_HYr4iyYDqA/data7.txt')
-#data8<-jsonlite::fromJSON(txt='E:/data18052020/messages/inbox/Jakbedziewdomusekcjazakazna_HYr4iyYDqA/data8.txt')
-#data9<-jsonlite::fromJSON(txt='E:/data18052020/messages/inbox/Jakbedziewdomusekcjazakazna_HYr4iyYDqA/data9.txt')
-#data10<-jsonlite::fromJSON(txt='E:/data18052020/messages/inbox/Jakbedziewdomusekcjazakazna_HYr4iyYDqA/data10.txt')
-#data11<-jsonlite::fromJSON(txt='E:/data18052020/messages/inbox/Jakbedziewdomusekcjazakazna_HYr4iyYDqA/data11.txt')
-#data12<-jsonlite::fromJSON(txt='E:/data18052020/messages/inbox/Jakbedziewdomusekcjazakazna_HYr4iyYDqA/data12.txt')
+data1<-jsonlite::fromJSON(txt='E:/data18052020/messages/inbox/Jakbedziewdomusekcjazakazna_HYr4iyYDqA/data1.txt')
+data2<-jsonlite::fromJSON(txt='E:/data18052020/messages/inbox/Jakbedziewdomusekcjazakazna_HYr4iyYDqA/data2.txt')
+data3<-jsonlite::fromJSON(txt='E:/data18052020/messages/inbox/Jakbedziewdomusekcjazakazna_HYr4iyYDqA/data3.txt')
+data4<-jsonlite::fromJSON(txt='E:/data18052020/messages/inbox/Jakbedziewdomusekcjazakazna_HYr4iyYDqA/data4.txt')
+data5<-jsonlite::fromJSON(txt='E:/data18052020/messages/inbox/Jakbedziewdomusekcjazakazna_HYr4iyYDqA/data5.txt')
+data6<-jsonlite::fromJSON(txt='E:/data18052020/messages/inbox/Jakbedziewdomusekcjazakazna_HYr4iyYDqA/data6.txt')
+data7<-jsonlite::fromJSON(txt='E:/data18052020/messages/inbox/Jakbedziewdomusekcjazakazna_HYr4iyYDqA/data7.txt')
+data8<-jsonlite::fromJSON(txt='E:/data18052020/messages/inbox/Jakbedziewdomusekcjazakazna_HYr4iyYDqA/data8.txt')
+data9<-jsonlite::fromJSON(txt='E:/data18052020/messages/inbox/Jakbedziewdomusekcjazakazna_HYr4iyYDqA/data9.txt')
+data10<-jsonlite::fromJSON(txt='E:/data18052020/messages/inbox/Jakbedziewdomusekcjazakazna_HYr4iyYDqA/data10.txt')
+data11<-jsonlite::fromJSON(txt='E:/data18052020/messages/inbox/Jakbedziewdomusekcjazakazna_HYr4iyYDqA/data11.txt')
+data12<-jsonlite::fromJSON(txt='E:/data18052020/messages/inbox/Jakbedziewdomusekcjazakazna_HYr4iyYDqA/data12.txt')
 ```
 
 
 
 ```{r}
-#data_msg_comb<-rbind(data1$messages[1:3],data2$messages[1:3],data3$messages[1:3],data4$messages[1:3],data5$messages[1:3],data6$messages[1:3],data7$messages[1:3],data8$messages[1:3],data9$messages[1:3],data10$messages[1:3],data11$messages[1:3],data12$messages[1:3])
+data_msg_comb<-rbind(data1$messages[1:3],data2$messages[1:3],data3$messages[1:3],data4$messages[1:3],data5$messages[1:3],data6$messages[1:3],data7$messages[1:3],data8$messages[1:3],data9$messages[1:3],data10$messages[1:3],data11$messages[1:3],data12$messages[1:3])
 
-data_msg_comb<-data1$messages[1:3] 
+#data_msg_comb<-data1$messages[1:3] 
 options(digits.secs=6)
 data_msg_comb[,2]<-as.POSIXct(as.vector(data_msg_comb[,2])/1000,origin=lubridate::origin)
 
@@ -61,7 +61,7 @@ df1<-tidyr::separate(data_msg_comb,col=timestamp_ms,
 
 
 ```{r}
-df2<-df1[-c(974:977),]
+#df2<-df1[-c(974:977),]
 df2<-df2%>%
   group_by(Date)%>%
   count(content)
@@ -73,7 +73,7 @@ ggplot(df2, aes(x=Date,y=n))+
   geom_col(color='coral2')+
   scale_x_datetime(date_breaks="2 months",date_labels="%m %Y")+
   theme(axis.text.x = element_text(angle = 90, hjust = 1))+
-  ggtitle('Ania')+
+  ggtitle('Wiadomości')+
   theme(plot.title = element_text(hjust = 0.5))+
   xlab('')+
   ylab('Wiadomości')
@@ -117,7 +117,6 @@ ggplot(df9, aes(x = hour(Time))) + geom_histogram(bins=24,breaks = seq(0,
   theme(plot.title = element_text(hjust = 0.5))+
     scale_x_continuous("", limits = c(0, 24), breaks = seq(0, 24), labels = seq(0, 
         24))
-#definitely not my type of plot
 ```
 
 
@@ -140,8 +139,8 @@ data_text<-data_msg_comb%>%
   tibble::rowid_to_column("doc_id")
 data_text<-data_text[,c('doc_id','content','sender_name','timestamp_ms')]
 colnames(data_text)<-c('doc_id','text','sender_name','timestamp_ms')
-data_short<-data_text #for convenience
-#data_short<-data_text[1:15000,]
+#data_short<-data_text #for convenience
+data_short<-data_text[1:15000,]
 ```
 
 
@@ -181,11 +180,6 @@ data_no_emoji$text<-gsub(paste(wek, collapse = '|'), 'wiem', data_no_emoji$text)
 wek<-c('czasu','czasie','czas')
 data_no_emoji$text<-gsub(paste(wek, collapse = '|'), 'czas', data_no_emoji$text)
 wek<-c('hej','hej','hejoo')
-data_no_emoji$text<-gsub(paste(wek, collapse = '|'), 'hej', data_no_emoji$text)
-wek<-c('Halkooooo','haloo')
-data_no_emoji$text<-gsub(paste(wek, collapse = '|'), 'halo', data_no_emoji$text)
-data_no_emoji$text<-gsub('Aniu', 'Ania', data_no_emoji$text)
-data_no_emoji$text<-gsub('Baaartooooosz', 'Bartosz', data_no_emoji$text)
 data_no_emoji$text<-gsub('chwile', 'chwila', data_no_emoji$text)
 ```
 
